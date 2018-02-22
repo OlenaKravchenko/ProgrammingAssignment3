@@ -33,20 +33,6 @@ best <- function(state, outcome) {
   }
   ## Return hospital name in that state with lowest 30-day death rate
   
-  if(outcome == ha) {
-    ha_state <- which(heart_attack_all[, "state"] == state)
-    ha_state_sear <- heart_attack_all[ha_state, ]
-    colnames(ha_state_sear) <- c("hospital name", "state", "outcome")
-    min_ha <- ha_state_sear[order(ha_state_sear$outcome), ]
-    min_ha[1,1]
-  }
-  if(outcome == hf) {
-    hf_state <- which(heart_failure_all[, "state"] == state)
-    hf_state_sear <- heart_failure_all[hf_state, ]
-    colnames(hf_state_sear) <- c("hospital name", "state", "outcome")
-    min_hf <- hf_state_sear[order(hf_state_sear$outcome), ]
-    min_hf[1,1]
-  }
   if(outcome == pn) {
     pn_state <- which(pneumonia_all[, "state"] == state)
     pn_state_sear <- pneumonia_all[pn_state, ]
@@ -54,5 +40,23 @@ best <- function(state, outcome) {
     min_pn <- pn_state_sear[order(pn_state_sear$outcome), ]
     min_pn[1,1]
   }
+  else 
+  if(outcome == hf) {
+    hf_state <- which(heart_failure_all[, "state"] == state)
+    hf_state_sear <- heart_failure_all[hf_state, ]
+    colnames(hf_state_sear) <- c("hospital name", "state", "outcome")
+    min_hf <- hf_state_sear[order(hf_state_sear$outcome), ]
+    min_hf[1,1]
+  }
+  else
+  if(outcome == ha) {
+    ha_state <- which(heart_attack_all[, "state"] == state)
+    ha_state_sear <- heart_attack_all[ha_state, ]
+    colnames(ha_state_sear) <- c("hospital name", "state", "outcome")
+    min_ha <- ha_state_sear[order(ha_state_sear$outcome), ]
+    min_ha[1,1]
+  }
+  
 } 
+
 
