@@ -6,46 +6,53 @@ best <- function(state, outcome) {
   pn <- c("pneumonia")
 
   heart_attack_all <- if(outcome == ha) {
-    ha_a <- as.data.frame(cbind(dat[, 2], ## hospital
-                                dat[, 7], ## state
-                                dat[, 11])) ## heart attack
-    colnames(ha_a) <- c("hospital name", "state", "outcome")
-    ha_a[, 3] <- as.numeric(ha_a[, 3])
-    return(ha_a) 
+    heart_attack_all <- dat[c(2, 7, 11)]
+    colnames(heart_attack_all) <- c("hospital name", "state", "outcome")
+    heart_attack_all[, 3] <- as.numeric(heart_attack_all[, 3])
+    heart_attack_all
   }
   heart_failure_all <- if(outcome == hf) {
-    hf_a <- as.data.frame(cbind(dat[, 2], ## hospital
-                                dat[, 7], ## state
-                                dat[, 17])) ## heart failure
-    colnames(hf_a) <- c("hospital name", "state", "outcome")
-    hf_a[, 3] <- as.numeric(hf_a[, 3])
-    return(hf_a) 
+    heart_failure_all <- dat[c(2, 7, 17)]
+    colnames(heart_failure_all) <- c("hospital name", "state", "outcome")
+    heart_failure_all[, 3] <- as.numeric(heart_failure_all[, 3])
+    heart_failure_all
   }
   pneumonia_all <- if(outcome == pn) {
-    pn_a <- as.data.frame(cbind(dat[, 2], ## hospital
-                                dat[, 7], ## state
-                                dat[, 23])) ## pneumonia
-    colnames(pn_a) <- c("hospital name", "state", "outcome")
-    pn_a[, 3] <- as.numeric(pn_a[, 3])
-    return(pn_a) 
+    pneumonia_all <- dat[c(2, 7, 23)]
+    colnames(pneumonia_all) <- c("hospital name", "state", "outcome")
+    pneumonia_all[, "outcome"] <- as.numeric(pneumonia_all[, "outcome"])
+    pneumonia_all
   }
   
   ## Check that state and outcome are valid
-  if(!state %in% data_raw[, "state"]) {
+  if(!state %in% dat[, "State"]) {
     stop("invalid state")
   }
-    if(!outcome %in% c("heart attack", "heart failure", "pneumonia")) {
-     stop("invalid outcome")
+  if(!outcome %in% c("heart attack", "heart failure", "pneumonia")) {
+    stop("invalid outcome")
   }
   ## Return hospital name in that state with lowest 30-day death rate
   
   if(outcome == ha) {
-    ha_state <- which(ha_a[, "state"] == "MD")
-    ha_state_sear <- ha_a[ha_state, ]
+    ha_state <- which(heart_attack_all[, "state"] == state)
+    ha_state_sear <- heart_attack_all[ha_state, ]
     colnames(ha_state_sear) <- c("hospital name", "state", "outcome")
-    min_ha <- as.data.frame(ha_state_sear[order(ha_state_sear$outcome), ], stringsAsFactors = FALSE)
-    
+    min_ha <- ha_state_sear[order(ha_state_sear$outcome), ]
+    min_ha[1,1]
   }
-  
+  if(outcome == hf) {
+    hf_state <- which(heart_failure_all[, "state"] == state)
+    hf_state_sear <- heart_failure_all[hf_state, ]
+    colnames(hf_state_sear) <- c("hospital name", "state", "outcome")
+    min_hf <- hf_state_sear[order(hf_state_sear$outcome), ]
+    min_hf[1,1]
+  }
+  if(outcome == pn) {
+    pn_state <- which(pneumonia_all[, "state"] == state)
+    pn_state_sear <- pneumonia_all[pn_state, ]
+    colnames(pn_state_sear) <- c("hospital name", "state", "outcome")
+    min_pn <- pn_state_sear[order(pn_state_sear$outcome), ]
+    min_pn[1,1]
+  }
 } 
 
