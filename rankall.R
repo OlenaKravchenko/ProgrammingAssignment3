@@ -36,6 +36,27 @@ rankall <- function(outcome, num) {
       x[num]
     }
   }
-  dat <- data[, c()]
+  if(outcome == ha) {
+    ha_ordered <- heart_attack_all[order(heart_attack_all$outcome, heart_attack_all$'hospital name'), ]
+    good_ha_ordered <- ha_ordered[complete.cases(ha_ordered), ]
+    ha_by_state <- with(good_ha_ordered, split(good_ha_ordered, good_ha_ordered[, 2]))
+    ha_by_state
+    if(num == "best") {
+      num_best <- 1
+      num <- num_best
+      best_ha <- for (i in seq_along(ha_by_state)) {
+        rbind(ha_by_state[1, 1:2])
+      }
+      best_ha
+    }
+    if(num == "worst" & outcome == pn) {
+      num_worst_pn <- as.numeric(nrow(good_min_pn))
+      num <- num_worst_pn
+      num
+    }
+    if(outcome == pn & num > nrow(good_min_pn)) {
+      return("NA")
+    }
+  }
   
 }
